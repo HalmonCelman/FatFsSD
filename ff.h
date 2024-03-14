@@ -347,6 +347,10 @@ TCHAR* f_gets (TCHAR* buff, int len, FIL* fp);						/* Get a string from the fil
 #define f_rmdir(path) f_unlink(path)
 #define f_unmount(path) f_mount(0, path, 0)
 
+// custom functions - by KK
+uint8_t FatFs_Init_fs(FATFS* fs , uint8_t volume, char* path);
+uint8_t FatFs_Close_fs(char* path);
+
 /* Device dependent functions - for driver */
 void FatFs_clock(void); //should be called with frequency 100Hz
 extern void FatFs_CS_HIGH(void);

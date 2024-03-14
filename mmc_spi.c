@@ -56,8 +56,28 @@ static BYTE CardType;			/* Card type flags (b0:MMC, b1:SDv1, b2:SDv2, b3:Block a
 
 
 /*-----------------------------------------------------------------------*/
-/* Transmit/Receive data from/to MMC via SPI  (Platform dependent)       */
+/* Transmit/Receive data from/to MMC via SPI  (Platform independent - thanks to the driver file)       */
 /*-----------------------------------------------------------------------*/
+
+/*
+ * custom function by KK
+ * initializes disk, waits for inserting
+ * if disk isn't inserted or cannot be read, it will wait to infinity
+ * if logical mounting fails, function will return sth diffrent from 0
+ * fs - you should define somewhere in your code filesystem f.e. FATFS fs1
+ * volume - default 0
+ * path - default ""
+ * for more information see Chan's site about f_mount and disk_initialize
+ */
+uint8_t FatFs_Init_fs(FATFS* fs, uint8_t volume, char* path){
+	while(disk_initialize(volume));
+	return f_mount(fs,path,0);
+}
+
+// unmounts logical drive
+uint8_t FatFs_Close_fs(char* path){
+	return f_unmount(path);
+}
 
 /* Exchange a byte */
 static
